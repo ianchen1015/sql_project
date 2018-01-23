@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Database</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/w3.css">
+    <!-- ... <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> ... -->
+
+</head>
+
+<body class="w3-light-grey">
+
+    
+
+    <div class="w3-content">
+    <div style="position: fixed; top: 0">
+        <div class="w3-panel w3-card w3-dark-grey ">
+            <button class="w3-bar-item w3-button" onclick="sort_id(0)">Sort</button>
+            <a href="#" class="w3-bar-item w3-button">Search</a>
+            <button id="modal_insert_btn" class="w3-bar-item w3-button">Insert</button>
+        </div>
+
+        <div class="w3-panel w3-card w3-blue-grey ">
+            <div class="w3-dropdown-hover w3-blue-grey">
+                <button class="w3-button">ID</button>
+                <div class="w3-dropdown-content w3-bar-block w3-blue-grey">
+                    <button class="w3-bar-item w3-button" onclick="sort_id(0)">New</button>
+                    <button class="w3-bar-item w3-button" onclick="sort_id(1)">Old</button>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-blue-grey">
+                <button class="w3-button">Name</button>
+                <div class="w3-dropdown-content w3-bar-block w3-blue-grey">
+                    <button class="w3-bar-item w3-button" onclick="sort_name(0)">A-Z</button>
+                    <button class="w3-bar-item w3-button" onclick="sort_name(1)">Z-A</button>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-blue-grey">
+                <button class="w3-button">Value</button>
+                <div class="w3-dropdown-content w3-bar-block w3-blue-grey">
+                    <button class="w3-bar-item w3-button" onclick="sort_value(1)">Increase</button>
+                    <button class="w3-bar-item w3-button" onclick="sort_value(0)">Decrease</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="w3-content" style="margin-top: 126px; height: 1500px;">
+        <div id="show"></div>
+    </div>
+
+    <!-- The modal_insert -->
+    <div id="modal_insert" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span class="close w3-button w3-display-topright">&times;</span>
+                <p>insert zzz.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- The modal_edit -->
+    <div id="modal_edit" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span class="close2 w3-button w3-display-topright">&times;</span>
+                <div id= edit_page>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/show.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
+
+</body>
+</html>

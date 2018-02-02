@@ -1,46 +1,79 @@
-//get data by ajax
-var data;
-var oReq = new XMLHttpRequest();
-oReq.open("get", "php/get-data.php", true);
-oReq.send();
-
-oReq.onload = function() {
-    //console.log(this.responseText)
-    data = JSON.parse(this.responseText);
-    sort_id(0);
-};
-////
 
 function show(out_index){//output by out_id id order
 	var output = '';
     for(var i = 0; i < out_index.length; i++){
     	//output += '<div class="w3-panel w3-card w3-white"><p>';
-    	var obj = data[ out_index[i] ];
-    	output += 
-    	'<div class="w3-panel w3-card w3-white">'+
-    	'	<div class="w3-row">'+
-    	'		<div class="w3-col" style="width:75px">'+
-    	'			<p><button id="modal_edit_btn" onclick="modal_edit_btn('+obj['id']+')" class="w3-button w3-white w3-border" style="width:60px">Edit</button></p>'+
-    	'			<p><button class="w3-button w3-white w3-border" style="width:60px">Del</button></p>'+
-    	'		</div>'+
-    	'	<div class="w3-rest">'+
-    	'		<p>';
+    	var obj = sql_data[ out_index[i] ];
+		output += 
+		'<div class="w3-panel w3-card w3-round w3-white">'+
+		'<p>'+
+		'<button onclick="modal_view('+ out_index[i] +');" class="w3-button w3-white w3-border w3-round">View</button>'+
+		'<button onclick="del_confirm('+ out_index[i] +')" class="w3-button w3-white w3-border w3-round">Del</button>'+
+			'<div class="w3-row w3-border w3-round ">'+
+				'<div class="w3-col m6">'+
+					'<ul class="w3-ul w3-hoverable">';
 	    for (var key in obj){
 	        //console.log(key, obj[key]);
-	        output += key + ': ' + obj[key] + '<br>';
-	    }
+			output += 
+			'<li><span class="w3-small w3-text-grey">'+
+			key +
+			'&emsp;</span>'+
+			obj[key] +
+			'</li>';
+		}
+		
+		var show_id = obj['id'];
+
 	    output += 
-	    '		</p></div></div></div>';
+				'</ul>'+
+				'</div>'+
+				'<div class="w3-col m6 w3-center">'+
+				'<div id="'+ show_id +'_show_images"></div>'+
+				'</div>'+
+			'</div>'+
+		'</p>'+
+		'</div>';			
+		show_image(show_id);
+
+		document.getElementById("show").innerHTML = output;
     }
-   	document.getElementById("show").innerHTML = output;
+}
+
+function show_image(show_id) {
+	$.ajax({
+		type: "Post",
+		url: "php/load_images.php",
+		dataType: "json",
+		data: {
+			id: show_id,
+		},
+		success: function(phpdata) {
+			var output =
+			'<div class="w3-container">';
+			for(var i = 0; i < phpdata.length; i++){
+				//console.log(phpdata[i]);
+				output += 
+				'<div class="small-gallery w3-round">'+
+					'<img src="data/'+ show_id +'/images/'+ phpdata[i] +'">'+
+				'</div>';
+			}
+			output +=
+			'</div>';
+			document.getElementById(show_id +"_show_images").innerHTML = output;
+		},
+		error: function(jqXHR) {
+			var output ='';
+			document.getElementById(show_id +"_show_images").innerHTML = output;
+		}
+	})
 }
 
 function sort_id(x) {
     var output = '';
     var sortable = [];
     var index = 0;
-    for(var i = 0; i < data.length; i++){
-    	var obj = data[i];
+    for(var i = 0; i < sql_data.length; i++){
+    	var obj = sql_data[i];
     	sortable.push( [ Number(obj['id']), index ] );
     	index += 1;
     }
@@ -62,8 +95,8 @@ function sort_name(x){
     var output = '';
     var sortable = [];
     var index = 0;
-    for(var i = 0; i < data.length; i++){
-    	var obj = data[i];
+    for(var i = 0; i < sql_data.length; i++){
+    	var obj = sql_data[i];
     	sortable.push( [ obj['name'], index ] );
     	index += 1;
     }
@@ -95,8 +128,8 @@ function sort_value(x){
     var output = '';
     var sortable = [];
     var index = 0;
-    for(var i = 0; i < data.length; i++){
-    	var obj = data[i];
+    for(var i = 0; i < sql_data.length; i++){
+    	var obj = sql_data[i];
     	sortable.push( [ obj['value'], index ] );
     	index += 1;
     }

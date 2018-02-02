@@ -7,22 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/w3.css">
     <!-- ... <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> ... -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="js/lazyload.min.js"></script>
+    <script type="text/javascript" src="js/viewer.min.js"></script>
+    <link  rel="stylesheet" href="css/viewer.min.css">
+    <link  rel="stylesheet" href="css/picture.css">
 
+    <style>.error{color:red;}</style>
+    <style>.hide{display: none;}</style>
 </head>
 
-<body class="w3-light-grey">
+<body class="w3-light-grey"">
 
-    
+<script>var sql_data;</script>
 
-    <div class="w3-content">
-    <div style="position: fixed; top: 0">
-        <div class="w3-panel w3-card w3-dark-grey ">
-            <button class="w3-bar-item w3-button" onclick="sort_id(0)">Sort</button>
-            <a href="#" class="w3-bar-item w3-button">Search</a>
-            <button id="modal_insert_btn" class="w3-bar-item w3-button">Insert</button>
+<div class="w3-top">
+<div class="w3-container">
+<div class="w3-content">
+    <p>
+        <div class="w3-panel w3-card w3-round w3-dark-grey ">
+            <button class="w3-bar-item w3-button" id="all_btn" onclick="get_data();sort_id(0);">All</button>
+            <button class="w3-bar-item w3-button" id="search_btn">Search</button>
+            <button class="w3-bar-item w3-button" onclick="modal_insert();modal_open();">Insert</button>
         </div>
-
-        <div class="w3-panel w3-card w3-blue-grey ">
+    </p>
+    <p>
+        <div class="w3-panel w3-card w3-round w3-blue-grey ">
             <div class="w3-dropdown-hover w3-blue-grey">
                 <button class="w3-button">ID</button>
                 <div class="w3-dropdown-content w3-bar-block w3-blue-grey">
@@ -45,36 +56,64 @@
                 </div>
             </div>
         </div>
-    </div>
-    </div>
+    </p>
+</div>
+</div>
+</div>
+
+<div class="w3-container">
 
     <div class="w3-content" style="margin-top: 126px; height: 1500px;">
+        <div class="hide" id="search_bar">
+        <div class="w3-panel w3-card w3-round w3-white" stlye="display:none!important">
+            <p>
+                <select class="w3-select" id="option" name="option" align="center" valign="center">
+                <option value="" disabled selected>Choose your option</option>
+                <option value="name">Name</option>
+                <option value="value" >Value</option>
+                <option value="text">Text</option>
+                </select>
+            </p>
+            <p>
+                <div id="search_for"></div>
+            </p>
+            <p>
+                <div class="hide" id="search_for_btn" align="right">
+                    <button id="search_func" class="w3-button w3-white w3-border w3-round">search</button>
+                </div>
+            </p>
+        </div>
+        </div>
         <div id="show"></div>
     </div>
 
-    <!-- The modal_insert -->
-    <div id="modal_insert" class="w3-modal">
-        <div class="w3-modal-content">
+    <!-- The form modal -->
+    <div id="modal" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-light-grey w3-round">
             <div class="w3-container">
-                <span class="close w3-button w3-display-topright">&times;</span>
-                <p>insert zzz.</p>
+                <span class="close w3-button w3-round-xxlarge w3-display-topright">&times;</span>
+                <div id="form_content"></div>
             </div>
         </div>
     </div>
 
-    <!-- The modal_edit -->
-    <div id="modal_edit" class="w3-modal">
-        <div class="w3-modal-content">
+    <!-- The View modal -->
+    <div id="view_modal" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-light-grey w3-round">
             <div class="w3-container">
-                <span class="close2 w3-button w3-display-topright">&times;</span>
-                <div id= edit_page>
-                </div>
+                <span class="view_close w3-button w3-round-xxlarge w3-display-topright">&times;</span>
+                <div id="view_content"></div>
             </div>
         </div>
     </div>
 
-    <script type="text/javascript" src="js/show.js"></script>
+</div>
+
+    <script type="text/javascript" src="js/get_data.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/modal.js"></script>
-
+    <script type="text/javascript" src="js/search.js"></script>
+    <script type="text/javascript" src="js/readURL.js"></script>
+    
 </body>
 </html>

@@ -50,7 +50,7 @@ function modal_insert() {
             '<div id="preview_progressbarTW_imgs" overflow:scroll;"><p>目前沒有圖片</p></div>'+
         
             '<div align="right">'+
-            '<p><input id="upimage" class="w3-btn w3-card w3-round w3-blue-grey" id="form_button" type="submit" value="Submit"><p>'+
+            '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="Submit"><p>'+
             '</div>'+
 
         '</form>'+
@@ -61,7 +61,8 @@ function modal_insert() {
             name: {required: true},
             value: {required: true, number: true}
         },
-        submitHandler:function(form){        
+        submitHandler:function(form){
+            modal.style.display = "none";  
             //disable the default form submission
             event.preventDefault();
             //grab all form data  
@@ -78,7 +79,6 @@ function modal_insert() {
                     alert(data);
                     get_data();
                     sort_id(0);
-                    modal.style.display = "none";
                 },
                 error: function(jqXHR) {
                     alert("Error"+jqXHR.status);
@@ -110,7 +110,7 @@ function modal_edit(index) {
             '<input Type="File" id="upfile" ><br>'+
         
             '<div align="right">'+
-            '<p><input class="w3-btn w3-card w3-round w3-blue-grey" id="form_button" type="submit" value="Submit"><p>'+
+            '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="Submit"><p>'+
             '</div>'+
 
         '</form>'+
@@ -179,6 +179,7 @@ function del_file (file_dir, edit_id) {
         success: function(data) {
             alert(data);
             edit_image(edit_id);
+            show_image(edit_id)
         },
         error: function(jqXHR) {
             alert("Error"+jqXHR.status);

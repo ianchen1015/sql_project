@@ -143,11 +143,15 @@ function edit_image(edit_id) {
             '<div class="images w3-container">';
             for(var i = 0; i < phpdata.length; i++){
                 console.log(phpdata[i]);
+                var file_dir = "../data/"+ edit_id +"/images/"+ phpdata[i];
                 output += 
-                '<div class="gallery w3-round">'+
-                    '<img class="w3-round" src="data/'+ edit_id +'/images/'+ phpdata[i] +'" width="400" height="300">'+
-                    '<div class="desc w3-light-grey">'+ phpdata[i] +'</div>'+
-                '</div>';
+                    '<div class="gallery w3-round">'+
+                        '<div align="right">'+
+                            '<span class="w3-button w3-round-xxlarge" onclick="del_file('+ "'" + file_dir + "'" +','+ edit_id +')">&times;</span>'+
+                        '</div>'+
+                        '<img class="w3-round" src="data/'+ edit_id +'/images/'+ phpdata[i] +'" width="400" height="300">'+
+                        '<div class="desc w3-light-grey">'+ phpdata[i] +'</div>'+
+                    '</div>';
             }
             output +=
             '</div>'+
@@ -160,6 +164,25 @@ function edit_image(edit_id) {
             var output = '';
             document.getElementById(edit_id +"_edit_images").innerHTML = output;
             //alert("Image Error: " + jqXHR.status);
+        }
+    })
+}
+
+function del_file (file_dir, edit_id) {
+    $.ajax({
+        type: "POST",
+        url: "php/delete_file.php",
+        dataType: "text",
+        data: {
+            dir : file_dir,
+        },
+        success: function(data) {
+            alert(data);
+            edit_image(edit_id);
+        },
+        error: function(jqXHR) {
+            alert("Error"+jqXHR.status);
+            edit_image(edit_id);
         }
     })
 }

@@ -93,6 +93,7 @@ function modal_insert() {
 
 function modal_edit(index) {
     var obj = sql_data[ index ];
+    var edit_id = obj['id'];
     document.getElementById("form_content").innerHTML = 
     '<div id="modal_content" class="w3-container">'+
         '<h2 id="form_header">Edit</h2>'+
@@ -115,7 +116,9 @@ function modal_edit(index) {
             '</div>'+
 
         '</form>'+
+        '<div id="'+ edit_id +'_edit_images"></div>'+
     '</div>';
+    edit_image(edit_id);
 
     $("#form").validate({
         rules: {
@@ -127,6 +130,40 @@ function modal_edit(index) {
             return false; //stop the original submit
         }   
     });
+}
+
+function edit_image(edit_id) {
+    $.ajax({
+        type: "Post",
+        url: "php/load_images.php",
+        dataType: "json",
+        data: {
+            id: edit_id,
+        },
+        success: function(phpdata) {
+            var output =
+            '<div class="images w3-container">';
+            for(var i = 0; i < phpdata.length; i++){
+                console.log(phpdata[i]);
+                output += 
+                '<div class="gallery w3-round">'+
+                    '<img class="w3-round" src="data/'+ edit_id +'/images/'+ phpdata[i] +'" width="400" height="300">'+
+                    '<div class="desc w3-light-grey">'+ phpdata[i] +'</div>'+
+                '</div>';
+            }
+            output +=
+            '</div>'+
+            '</div></p>';
+            document.getElementById(edit_id +"_edit_images").innerHTML = output;
+            $('.image').viewer();
+            $('.images').viewer();
+        },
+        error: function(jqXHR) {
+            var output = '';
+            document.getElementById(edit_id +"_edit_images").innerHTML = output;
+            //alert("Image Error: " + jqXHR.status);
+        }
+    })
 }
 
 function edit(edit_id,index) {
@@ -151,7 +188,7 @@ function edit(edit_id,index) {
     })
 }
 
-function modal_view(index){
+function modal_view(index) {
     var obj = sql_data[ index ];
     var output = 
     '<p><div id="view_content" class="w3-container">'+

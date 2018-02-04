@@ -51,8 +51,8 @@ $("#search_func").click(function(){
             if(option == "value"){
                 for(var i = 0; i < sql_data.length; i++){
                     var obj = sql_data[ i ];
-                    console.log(num1+" <= "+obj['value']+" <= "+num2);
-                    if( num1 <= obj['value'] && obj['value'] <= num2 ){
+                    //console.log(num1+"<= "+obj['value']+" <= "+num2);
+                    if( Number(num1) <= Number(obj['value']) && Number(obj['value']) <= Number(num2) ){
                         out_data.push( obj );
                     }
                 }

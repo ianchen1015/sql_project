@@ -70,7 +70,7 @@ function modal_insert() {
                 url: 'php/insert.php',
                 type: 'POST',
                 data: formData,
-                async: false,
+                //async: false,
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -87,8 +87,6 @@ function modal_insert() {
             return false;
         }   
     });
-
-
 }
 
 function modal_edit(index) {
@@ -277,13 +275,28 @@ function del(index) {
             id: del_id,
         },
         success: function(data) {
-            alert(data);
-            get_data();
+            var del_dir = '../data/'+ del_id ;//del_dir
+            $.ajax({
+                type: "POST",
+                url: "php/delete_dir.php",
+                dataType: "text",
+                data: {
+                    dir : del_dir,
+                },
+                success: function(del_dir_data) {
+                    alert(data+del_dir_data);
+                    get_data();
+                },
+                error: function(del_dir_jqXHR) {
+                    alert("Error"+del_dir_jqXHR.status);
+                    get_data();
+                }
+            })
         },
         error: function(jqXHR) {
             alert("Error"+jqXHR.status);
+            get_data();
         }
     })
     modal.style.display = "none";
-    get_data();
 }

@@ -15,24 +15,12 @@
 </script>
 <BODY>
 
-<dic class="w3-container">
-    
-    <div class="gallery w3-round">
-<div align="right"><span class="close w3-button w3-round-xxlarge" >&times;</span></div>
-        <img class="w3-round" src="data/218/images/1.png" width="400" height="300">
-
-    </div>
-
-
-    <div class="images w3-container">
-    	<div class="gallery w3-round">
-    		<div align="right">
-    			<span class="w3-button w3-round-xxlarge" onclick="del_file(../data/240/images/cdb5WBK.png,240)">&times;</span>
-    		</div>
-    		<img class="w3-round" src="data/240/images/cdb5WBK.png" width="400" height="300">
-    		<div class="desc w3-light-grey">cdb5WBK.png</div>
-    	</div>
-    	<div class="gallery w3-round"><div align="right"><span class="w3-button w3-round-xxlarge" onclick="del_file(../data/240/images/JL5P43V.png,240)">&times;</span></div><img class="w3-round" src="data/240/images/JL5P43V.png" width="400" height="300"><div class="desc w3-light-grey">JL5P43V.png</div></div><div class="gallery w3-round"><div align="right"><span class="w3-button w3-round-xxlarge" onclick="del_file(../data/240/images/P53V6Ni.png,240)">&times;</span></div><img class="w3-round" src="data/240/images/P53V6Ni.png" width="400" height="300"><div class="desc w3-light-grey">P53V6Ni.png</div></div><div class="gallery w3-round"><div align="right"><span class="w3-button w3-round-xxlarge" onclick="del_file(../data/240/images/tDtbWIn.png,240)">&times;</span></div><img class="w3-round" src="data/240/images/tDtbWIn.png" width="400" height="300"><div class="desc w3-light-grey">tDtbWIn.png</div></div></div></div></p>
-</div>
+        '<form id="upload_img">'+//upload img
+        '<Input Type="File" Name="upfile[]" onchange="readURL(this)" targetID="preview_progressbarTW_img" multiple/ ><br>'+
+            '<div id="preview_progressbarTW_imgs" overflow:scroll;"><p>目前沒有圖片</p></div>'+
+        '<div align="right">'+
+            '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="Submit"><p>'+
+            '</div>'+
+        '</form>'+
 
 </BODY></HTML>

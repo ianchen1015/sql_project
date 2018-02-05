@@ -47,7 +47,7 @@ function modal_insert() {
             '<textarea class="w3-input w3-border w3-round" id="text" name="text" type="text" style="resize:none"></textarea></p>'+
         
             '<Input Type="File" Name="upfile[]" onchange="readURL(this)" targetID="preview_progressbarTW_img" multiple/ ><br>'+
-            '<div id="preview_progressbarTW_imgs" overflow:scroll;"><p>目前沒有圖片</p></div>'+
+            '<div id="preview_progressbarTW_imgs"></div>'+
         
             '<div align="right">'+
             '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="Submit"><p>'+
@@ -95,7 +95,7 @@ function modal_edit(index) {
     document.getElementById("form_content").innerHTML = 
     '<div id="modal_content" class="w3-container">'+
         '<h2 id="form_header">Edit</h2>'+
-        '<form id="form">'+
+        '<form id="form">'+//edit form
 
             '<p><label>Name</label>'+
             '<input class="w3-input w3-border w3-round" id="name" name="name" type="text" value="'+ obj["name"] +'" autofocus></p>'+
@@ -106,15 +106,24 @@ function modal_edit(index) {
             '<p><label>Text</label>'+
             '<textarea class="w3-input w3-border w3-round" id="text" name="text" type="text" value="'+ obj["text"] +'" style="resize:none"></textarea></p>'+
         
-            '<p><label>Image</label><br>'+
-            '<input Type="File" id="upfile" ><br>'+
-        
             '<div align="right">'+
             '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="Submit"><p>'+
             '</div>'+
 
         '</form>'+
-        '<div id="'+ edit_id +'_edit_images"></div>'+
+
+        '<p><div class="w3-container w3-border w3-round w3-light-grey"><p>'+
+        '<form id="upload_img">'+//upload img
+        '<input class="hide w3-input w3-border w3-round" name="id" type="text" value="'+ edit_id +'" ></p>'+
+            '<Input Type="File" Name="upfile[]" onchange="readURL(this)" targetID="preview_progressbarTW_img" multiple/ ><br>'+
+                '<div id="preview_progressbarTW_imgs"></div>'+
+            '<div align="right">'+
+                '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="upload"><p>'+
+                '</div>'+
+        '</form>'+
+        '</p></div></p>'+
+
+        '<div id="'+ edit_id +'_edit_images"></div>'+//show imgs
     '</div>';
     edit_image(edit_id);
 
@@ -126,6 +135,37 @@ function modal_edit(index) {
         submitHandler:function(form){        
             edit(obj["id"],index);
             return false; //stop the original submit
+        }   
+    });
+
+    $("#upload_img").validate({
+        rules: {
+        },
+        submitHandler:function(form){
+            //disable the default form submission
+            event.preventDefault();
+            //grab all form data  
+            var formData = new FormData($(form)[0]);
+            $.ajax({
+                url: 'php/upload_files.php',
+                type: 'POST',
+                data: formData,
+                //async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $( "#preview_progressbarTW_imgs" ).load(window.location.href + " #preview_progressbarTW_imgs" );
+                    //alert(data);
+                    edit_image(edit_id);
+                    show_image(edit_id);
+                },
+                error: function(jqXHR) {
+                    alert("upload_img Error"+jqXHR.status);
+                    edit_image(edit_id);
+                    show_image(edit_id);
+                }
+            });
         }   
     });
 }
@@ -181,7 +221,7 @@ function del_file (file_dir, edit_id, filename) {
             success: function(data) {
                 alert(filename+data);
                 edit_image(edit_id);
-                show_image(edit_id)
+                show_image(edit_id);
             },
             error: function(jqXHR) {
                 alert("Error"+jqXHR.status);

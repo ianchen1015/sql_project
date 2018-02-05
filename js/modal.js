@@ -147,7 +147,7 @@ function edit_image(edit_id) {
                 output += 
                     '<div class="gallery w3-round">'+
                         '<div align="right">'+
-                            '<span class="w3-button w3-round-xxlarge" onclick="del_file('+ "'" + file_dir + "'" +','+ edit_id +')">&times;</span>'+
+                            '<span class="w3-button w3-round-xxlarge" onclick="del_file('+ "'" + file_dir + "'" +','+ edit_id + ','+"'"+ phpdata[i] +"'"+')">&times;</span>'+
                         '</div>'+
                         '<img class="w3-round" src="data/'+ edit_id +'/images/'+ phpdata[i] +'" width="400" height="300">'+
                         '<div class="desc w3-light-grey">'+ phpdata[i] +'</div>'+
@@ -168,24 +168,27 @@ function edit_image(edit_id) {
     })
 }
 
-function del_file (file_dir, edit_id) {
-    $.ajax({
-        type: "POST",
-        url: "php/delete_file.php",
-        dataType: "text",
-        data: {
-            dir : file_dir,
-        },
-        success: function(data) {
-            alert(data);
-            edit_image(edit_id);
-            show_image(edit_id)
-        },
-        error: function(jqXHR) {
-            alert("Error"+jqXHR.status);
-            edit_image(edit_id);
-        }
-    })
+function del_file (file_dir, edit_id, filename) {
+    var r = confirm("Delete "+ filename +"?\n\n");
+    if (r == true) {
+        $.ajax({
+            type: "POST",
+            url: "php/delete_file.php",
+            dataType: "text",
+            data: {
+                dir : file_dir,
+            },
+            success: function(data) {
+                alert(filename+data);
+                edit_image(edit_id);
+                show_image(edit_id)
+            },
+            error: function(jqXHR) {
+                alert("Error"+jqXHR.status);
+                edit_image(edit_id);
+            }
+        })
+    }
 }
 
 function edit(edit_id,index) {
@@ -281,7 +284,7 @@ function del_confirm(index){
     for (var key in obj){
         output += key + ": " + obj[key] + "\n";
     }
-    var r = confirm("Are rou sure???\n\n" + output);
+    var r = confirm("Are you sure?\n\n" + output);
     if (r == true) {
         del(index);
     }

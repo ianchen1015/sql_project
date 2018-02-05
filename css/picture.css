@@ -10,8 +10,9 @@ div.gallery:hover {
 }
 
 div.gallery img {
-    width: 100%;
-    height: auto;
+    width: 178px;
+    height: 178px;
+    overflow: hidden;
 }
 
 div.desc {
@@ -27,6 +28,7 @@ div.small-gallery {
 
 div.small-gallery  img {
     border: 1px solid #ccc;
-    width: 100%;
-    height: auto;
+    width: 98px;
+    height: 98px;
+    overflow: hidden;
 }

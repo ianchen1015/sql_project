@@ -190,7 +190,7 @@ function edit_image(edit_id) {
                             '<span class="w3-button w3-round-xxlarge" onclick="del_file('+ "'" + file_dir + "'" +','+ edit_id + ','+"'"+ phpdata[i] +"'"+')">&times;</span>'+
                         '</div>'+
                         '<img class="w3-round" src="data/'+ edit_id +'/images/'+ phpdata[i] +'" width="400" height="300">'+
-                        '<div class="desc w3-light-grey">'+ phpdata[i] +'</div>'+
+                        '<div class="desc w3-light-grey w3-round">'+ phpdata[i] +'</div>'+
                     '</div>';
             }
             output +=
@@ -300,7 +300,7 @@ function view_image(view_id){
                 output += 
                 '<div class="gallery w3-round">'+
                     '<img class="w3-round" src="data/'+ view_id +'/images/'+ phpdata[i] +'" width="400" height="300">'+
-                    '<div class="desc w3-light-grey">'+ phpdata[i] +'</div>'+
+                    '<div class="desc w3-light-grey w3-round">'+ phpdata[i] +'</div>'+
                 '</div>';
             }
             output +=

@@ -54,7 +54,7 @@ function show_image(show_id) {
 				//console.log(phpdata[i]);
 				output += 
 				'<div class="small-gallery w3-round">'+
-					'<img src="data/'+ show_id +'/images/'+ phpdata[i] +'">'+
+					'<img class="w3-round" src="data/'+ show_id +'/images/'+ phpdata[i] +'">'+
 				'</div>';
 			}
 			output +=

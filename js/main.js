@@ -8,7 +8,7 @@ function show(out_index){//output by out_id id order
 		'<div class="w3-panel w3-card w3-round w3-white">'+
 		'<p>'+
 		'<button onclick="modal_view('+ out_index[i] +');" class="w3-button w3-white w3-border w3-round">View</button>'+
-		'<button onclick="del_confirm('+ out_index[i] +')" class="w3-button w3-white w3-border w3-round">Del</button>'+
+		'<button onclick="del_confirm('+ out_index[i] +')" class="w3-button w3-white w3-border w3-round w3-hover-red">Del</button>'+
 			'<div class="w3-row w3-border w3-round ">'+
 				'<div class="w3-col m6">'+
 					'<ul class="w3-ul w3-hoverable">';

@@ -219,7 +219,7 @@ function del_file (file_dir, edit_id, filename) {
                 dir : file_dir,
             },
             success: function(data) {
-                alert(filename+data);
+                //alert(filename+data);
                 edit_image(edit_id);
                 show_image(edit_id);
             },

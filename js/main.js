@@ -49,7 +49,7 @@ function show_image(show_id) {
 		},
 		success: function(phpdata) {
 			var output =
-			'<div class="w3-container">';
+			'<div class="images w3-container">';
 			for(var i = 0; i < phpdata.length; i++){
 				//console.log(phpdata[i]);
 				output += 
@@ -60,6 +60,8 @@ function show_image(show_id) {
 			output +=
 			'</div>';
 			document.getElementById(show_id +"_show_images").innerHTML = output;
+			$('.image').viewer();
+    		$('.images').viewer();
 		},
 		error: function(jqXHR) {
 			var output ='';

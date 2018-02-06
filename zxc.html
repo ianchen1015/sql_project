@@ -10,14 +10,47 @@
     <link  rel="stylesheet" href="css/viewer.min.css">
     <link  rel="stylesheet" href="css/picture.css">
 
-<script>
-     $("img.lazyload").lazyload();
+<!-- third party -->
+  <script src="file_manager/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="file_manager/node_modules/angular/angular.min.js"></script>
+  <script src="file_manager/node_modules/angular-translate/dist/angular-translate.min.js"></script>
+  <script src="file_manager/node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
+  <script src="file_manager/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="file_manager/node_modules/bootswatch/paper/bootstrap.min.css" />
+
+<!-- angular-filemanager -->
+  <link rel="stylesheet" href="file_manager/dist/angular-filemanager.min.css">
+  <script src="file_manager/dist/angular-filemanager.min.js"></script>
+
+<script type="text/javascript">
+angular.module('FileManagerApp').config(['fileManagerConfigProvider', function (config) {
+  var defaults = config.$get();
+  config.set({
+    appName: 'angular-filemanager',
+    pickCallback: function(item) {
+      var msg = 'Picked %s "%s" for external use'
+        .replace('%s', item.type)
+        .replace('%s', item.fullPath());
+      window.alert(msg);
+    },
+
+    allowedActions: angular.extend(defaults.allowedActions, {
+      pickFiles: true,
+      pickFolders: false,
+    }),
+  });
+}]);
 </script>
+
 <BODY>
-<div class="w3-panel w3-card w3-round w3-white">
-    <p>
-        <button  class="w3-btn w3-white w3-border w3-round">View</button>
-        <button  class="w3-button w3-white w3-border w3-round">Del</button>
-    </p>
-</div>
-</BODY></HTML>
+
+
+
+
+<angular-filemanager></angular-filemanager>
+
+
+
+
+</BODY>
+</HTML>

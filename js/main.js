@@ -52,10 +52,21 @@ function show_image(show_id) {
 			'<div class="images w3-container">';
 			for(var i = 0; i < phpdata.length; i++){
 				//console.log(phpdata[i]);
-				output += 
-				'<div class="small-gallery w3-round">'+
-					'<img class="w3-round" src="data/'+ show_id +'/'+ phpdata[i] +'">'+
-				'</div>';
+				var image_extensions = ["jpg", "jpeg", "png", "gif"];
+				var file_extension = phpdata[i].split('.').pop();
+				if(image_extensions.includes(file_extension)){
+					output += 
+					'<div class="small-gallery w3-round">'+
+						'<img class="w3-round" src="data/'+ show_id +'/'+ phpdata[i] +'">'+
+					'</div>';					
+				}
+				else{
+					output += 
+					'<div class="small-gallery w3-round">'+
+						'<p>'+phpdata[i] +'</p>'+
+					'</div>';		
+				}
+
 			}
 			output +=
 			'</div>';

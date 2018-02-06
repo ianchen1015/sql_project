@@ -183,7 +183,7 @@ function edit_files(edit_id) {
             var output =
             '<div class="images w3-container">';
             for(var i = 0; i < phpdata.length; i++){
-                console.log(phpdata[i]);
+                //console.log(phpdata[i]);
                 var file_dir = "../data/"+ edit_id +"/"+ phpdata[i];
                 output += 
                     '<div class="gallery w3-round">'+
@@ -257,7 +257,7 @@ function edit(edit_id,index) {
 function modal_view(index) {
     var obj = sql_data[ index ];
     var output = 
-    '<p><div id="view_content" class="w3-container">'+
+    '<div id="view_content" class="w3-container">'+
         '<p><button onclick="modal_open();modal_edit('+ index +');" class="w3-button w3-white w3-round w3-border" style="width:70px" align="center">Edit</button></p>'+
         '<p><div class="w3-row w3-border w3-round w3-white">'+
             '<ul class="w3-ul w3-hoverable">';
@@ -274,12 +274,13 @@ function modal_view(index) {
         '</p>';
 
     var view_id = obj['id'];
-    console.log(view_id);
-    output +='<div id="'+ view_id +'_view_images"></div>'+
+    //console.log(view_id);
+    output +=
     '</div>'+
-    '</p>';
-    view_files(view_id);
+    '<div id="'+ view_id +'_view_files"></div>';
+
     document.getElementById("view_content").innerHTML = output;
+    view_files(view_id);
     //alert("Image Error: " + jqXHR.status);
     view_modal_open();
 
@@ -294,26 +295,127 @@ function view_files(view_id){
             id: view_id,
         },
         success: function(phpdata) {
-            var output =
-            '<div class="images w3-container">';
+            var image_names = [];
+            var audio_names = [];
+            var video_names = [];
+            var other_names = [];
+            var image_extensions = ["jpg", "jpeg", "png", "gif"];
+            var audio_extensions = ["ogg"];
+            var video_extensions = ["mp4"];
+
             for(var i = 0; i < phpdata.length; i++){
-                console.log(phpdata[i]);
-                output += 
-                '<div class="gallery w3-round">'+
-                    '<img class="w3-round" src="data/'+ view_id +'/'+ phpdata[i] +'" width="400" height="300">'+
-                    '<div class="desc w3-light-grey w3-round">'+ phpdata[i] +'</div>'+
-                '</div>';
+                var file_extension = phpdata[i].split('.').pop();
+                //console.log(file_extension);
+                if(image_extensions.includes(file_extension))
+                    image_names.push(phpdata[i]);
+                else if(audio_extensions.includes(file_extension))
+                    audio_names.push(phpdata[i]);
+                else if(video_extensions.includes(file_extension))
+                    video_names.push(phpdata[i]);
+                else
+                    other_names.push(phpdata[i]);
             }
-            output +=
-            '</div>'+
-            '</div></p>';
-            document.getElementById(view_id +"_view_images").innerHTML = output;
+            console.log("image, "+image_names);
+            console.log("audio, "+audio_names);
+            console.log("video, "+video_names);
+            console.log("other, "+other_names);
+
+            var output = "";
+
+            //image
+            if(image_names.length != 0){
+                output +=
+                '<p><div class="w3-container w3-border w3-round w3-white">'+
+                '<h2>Image</h2>'+
+                '<p><div class="images w3-container">';
+                for(var i = 0; i < image_names.length; i++){
+                    //console.log(phpdata[i]);
+                    output += 
+                    '<div class="gallery w3-round">'+
+                        '<img class="w3-round" src="data/'+ view_id +'/'+ image_names[i] +'" >'+
+                        '<div class="desc w3-light-grey w3-round">'+ image_names[i] +'</div>'+
+                    '</div>';
+                }
+                output +=
+                '</div></p>'+
+                '</div></p>';                
+            }
+
+            //audio
+            if(audio_names.length != 0){
+                output +=
+                '<p><div class="w3-container w3-border w3-round w3-white">'+
+                '<h2>Audio</h2>'+
+                '<div class="w3-container">';
+                for(var i = 0; i < audio_names.length; i++){
+                    //console.log(phpdata[i]);
+                    output += 
+                    '<p>'+ 
+                        '<div class="w3-border w3-round">'+
+                        audio_names[i] +'<br>'+
+                        '<audio controls style="max-width: 100%">'+
+                        '<source src="data/'+ view_id +'/'+ audio_names[i] +'" type="video/ogg">'+
+                        'Your browser does not support the audio element.'+
+                    '</div>'+
+                    '</audio>'+
+                    '</p>';
+                }
+                output +=
+                '</div>'+
+                '</div></p>';                 
+            }
+
+            //video
+            if(video_names.length != 0){
+                output +=
+                '<p><div class="w3-container w3-border w3-round w3-white">'+
+                '<h2>Video</h2>'+
+                '<div class="w3-container">';
+                for(var i = 0; i < video_names.length; i++){
+                    //console.log(phpdata[i]);
+                    output += 
+                    '<p>'+ 
+                        '<div class="w3-border w3-round">'+
+                        video_names[i] +
+                        '<video controls style="max-width: 100%">'+
+                        '<source src="data/'+ view_id +'/'+ video_names[i] +'" type="video/mp4">'+
+                        'Your browser does not support HTML5 video.'+
+                        '</div>'+
+                        '</video>'+
+                    '</p>';
+                }
+                output +=
+                '</div>'+
+                '</div></p>';                
+            }
+
+            //other
+            if(other_names.length != 0){
+                output +=
+                '<p><div class="w3-container w3-border w3-round w3-white">'+
+                '<h2>Unknown type</h2>'+
+                '<div class="w3-container">';
+                for(var i = 0; i < other_names.length; i++){
+                    //console.log(phpdata[i]);
+                    output += 
+                    '<div class="w3-container w3-round">'+
+                        '<div class="desc w3-light-grey w3-round">'+ other_names[i] +'</div>'+
+                    '</div>';
+                }
+                output +=
+                '</div></p>'+
+                '</div>'+
+                '</div></p>';                
+            }
+
+
+            document.getElementById(view_id +"_view_files").innerHTML = output;
             $('.image').viewer();
             $('.images').viewer();
         },
         error: function(jqXHR) {
             var output = '';
-            document.getElementById(view_id +"_view_images").innerHTML = output;
+            document.getElementById(view_id +"_view_files").innerHTML = output;
             //alert("Image Error: " + jqXHR.status);
         }
     })

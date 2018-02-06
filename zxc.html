@@ -18,36 +18,29 @@
   <script src="file_manager/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="file_manager/node_modules/bootswatch/paper/bootstrap.min.css" />
 
-<!-- angular-filemanager -->
-  <link rel="stylesheet" href="file_manager/dist/angular-filemanager.min.css">
-  <script src="file_manager/dist/angular-filemanager.min.js"></script>
+    <!-- video player: videojs 6.6.3-->
+    <script src="plugin/image_viewer/video.min.js"></script>
+    <link href="plugin/image_viewer/video-js.min.css" rel="stylesheet">
 
-<script type="text/javascript">
-angular.module('FileManagerApp').config(['fileManagerConfigProvider', function (config) {
-  var defaults = config.$get();
-  config.set({
-    appName: 'angular-filemanager',
-    pickCallback: function(item) {
-      var msg = 'Picked %s "%s" for external use'
-        .replace('%s', item.type)
-        .replace('%s', item.fullPath());
-      window.alert(msg);
-    },
-
-    allowedActions: angular.extend(defaults.allowedActions, {
-      pickFiles: true,
-      pickFolders: false,
-    }),
-  });
-}]);
-</script>
 
 <BODY>
 
+    <embed src="data/255/1.mp3" width="200" height="43" autostart="true" loop="true"></embed>
 
+<p><video width="400" controls>
+  <source src="data/255/1.mp3" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video></p>
 
+<audio controls>
+  <source src="data/255/1.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+cc
+<audio src="song.mp3" controls="controls">
+Your browser does not support the audio element.
+</audio>
 
-<angular-filemanager></angular-filemanager>
 
 
 

@@ -115,7 +115,7 @@ function modal_edit(index) {
         '<p><div class="w3-container w3-border w3-round w3-light-grey"><p>'+
         '<form id="upload_img">'+//upload img
         '<input class="hide w3-input w3-border w3-round" name="id" type="text" value="'+ edit_id +'" ></p>'+
-            '<Input Type="File" Name="upfile[]" onchange="readURL(this)" targetID="preview_progressbarTW_img" multiple/ ><br>'+
+            '<Input id ="input_upload" Type="File" Name="upfile[]" onchange="readURL(this)" targetID="preview_progressbarTW_img" multiple/ ><br>'+
                 '<div id="preview_progressbarTW_imgs"></div>'+
             '<div align="right">'+
                 '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="upload"><p>'+
@@ -125,7 +125,7 @@ function modal_edit(index) {
 
         '<div id="'+ edit_id +'_edit_images"></div>'+//show imgs
     '</div>';
-    edit_image(edit_id);
+    edit_files(edit_id);
 
     $("#form").validate({
         rules: {
@@ -155,14 +155,15 @@ function modal_edit(index) {
                 contentType: false,
                 processData: false,
                 success: function(data) {
+                    $( "#input_upload" ).load(window.location.href + " #input_upload" );
                     $( "#preview_progressbarTW_imgs" ).load(window.location.href + " #preview_progressbarTW_imgs" );
                     //alert(data);
-                    edit_image(edit_id);
+                    edit_files(edit_id);
                     show_image(edit_id);
                 },
                 error: function(jqXHR) {
                     alert("upload_img Error"+jqXHR.status);
-                    edit_image(edit_id);
+                    edit_files(edit_id);
                     show_image(edit_id);
                 }
             });
@@ -170,10 +171,10 @@ function modal_edit(index) {
     });
 }
 
-function edit_image(edit_id) {
+function edit_files(edit_id) {
     $.ajax({
         type: "Post",
-        url: "php/load_images.php",
+        url: "php/load_files.php",
         dataType: "json",
         data: {
             id: edit_id,
@@ -183,13 +184,13 @@ function edit_image(edit_id) {
             '<div class="images w3-container">';
             for(var i = 0; i < phpdata.length; i++){
                 console.log(phpdata[i]);
-                var file_dir = "../data/"+ edit_id +"/images/"+ phpdata[i];
+                var file_dir = "../data/"+ edit_id +"/"+ phpdata[i];
                 output += 
                     '<div class="gallery w3-round">'+
                         '<div align="right">'+
                             '<span class="w3-button w3-round-xxlarge" onclick="del_file('+ "'" + file_dir + "'" +','+ edit_id + ','+"'"+ phpdata[i] +"'"+')">&times;</span>'+
                         '</div>'+
-                        '<img class="w3-round" src="data/'+ edit_id +'/images/'+ phpdata[i] +'" width="400" height="300">'+
+                        '<img class="w3-round" src="data/'+ edit_id +'/'+ phpdata[i] +'" width="400" height="300">'+
                         '<div class="desc w3-light-grey w3-round">'+ phpdata[i] +'</div>'+
                     '</div>';
             }
@@ -220,12 +221,12 @@ function del_file (file_dir, edit_id, filename) {
             },
             success: function(data) {
                 //alert(filename+data);
-                edit_image(edit_id);
+                edit_files(edit_id);
                 show_image(edit_id);
             },
             error: function(jqXHR) {
                 alert("Error"+jqXHR.status);
-                edit_image(edit_id);
+                edit_files(edit_id);
             }
         })
     }
@@ -277,17 +278,17 @@ function modal_view(index) {
     output +='<div id="'+ view_id +'_view_images"></div>'+
     '</div>'+
     '</p>';
-    view_image(view_id);
+    view_files(view_id);
     document.getElementById("view_content").innerHTML = output;
     //alert("Image Error: " + jqXHR.status);
     view_modal_open();
 
 }
 
-function view_image(view_id){
+function view_files(view_id){
     $.ajax({
         type: "Post",
-        url: "php/load_images.php",
+        url: "php/load_files.php",
         dataType: "json",
         data: {
             id: view_id,
@@ -299,7 +300,7 @@ function view_image(view_id){
                 console.log(phpdata[i]);
                 output += 
                 '<div class="gallery w3-round">'+
-                    '<img class="w3-round" src="data/'+ view_id +'/images/'+ phpdata[i] +'" width="400" height="300">'+
+                    '<img class="w3-round" src="data/'+ view_id +'/'+ phpdata[i] +'" width="400" height="300">'+
                     '<div class="desc w3-light-grey w3-round">'+ phpdata[i] +'</div>'+
                 '</div>';
             }

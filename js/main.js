@@ -42,7 +42,7 @@ function show(out_index){//output by out_id id order
 function show_image(show_id) {
 	$.ajax({
 		type: "Post",
-		url: "php/load_images.php",
+		url: "php/load_files.php",
 		dataType: "json",
 		data: {
 			id: show_id,
@@ -54,7 +54,7 @@ function show_image(show_id) {
 				//console.log(phpdata[i]);
 				output += 
 				'<div class="small-gallery w3-round">'+
-					'<img class="w3-round" src="data/'+ show_id +'/images/'+ phpdata[i] +'">'+
+					'<img class="w3-round" src="data/'+ show_id +'/'+ phpdata[i] +'">'+
 				'</div>';
 			}
 			output +=

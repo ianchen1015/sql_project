@@ -4,7 +4,7 @@ $_id = $_POST["id"];
 
 $emparray = array();
 
-$_dir = "../data/".$_id."/images/";
+$_dir = "../data/".$_id."/";
 
 if ($handle = opendir($_dir)) {
     while (false !== ($entry = readdir($handle))) {

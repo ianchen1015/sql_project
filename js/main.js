@@ -54,7 +54,8 @@ function show_image(show_id) {
 				//console.log(phpdata[i]);
 				var image_extensions = ["jpg", "jpeg", "png", "gif"];
 				var file_extension = phpdata[i].split('.').pop();
-				if(image_extensions.includes(file_extension)){
+				//image_extensions.includes(file_extension)
+				if(0){
 					output += 
 					'<div class="small-gallery w3-round">'+
 						'<img class="w3-round" src="data/'+ show_id +'/'+ phpdata[i] +'">'+
@@ -62,11 +63,8 @@ function show_image(show_id) {
 				}
 				else{
 					output += 
-					'<div class="small-gallery w3-round">'+
-						'<p>'+phpdata[i] +'</p>'+
-					'</div>';		
+						'<p>'+ phpdata[i] +'</p>';
 				}
-
 			}
 			output +=
 			'</div>';

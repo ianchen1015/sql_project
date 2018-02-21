@@ -1,14 +1,3 @@
-$("#search_btn").click(function(){
-    $("#search_bar").fadeIn();
-    $("#option").val("")
-});
-
-$("#all_btn").click(function(){
-    $("#search_bar").fadeOut();
-    $("#search_for").fadeOut();
-    $("#option").val("")
-});
-
 $("#option").on("change", function() {
     console.log("option:  "+this.value);
     if(this.value == ""){
@@ -28,7 +17,6 @@ $("#option").on("change", function() {
         $("#search_for_btn").fadeIn();
     }
 })
-
 
 $("#search_func").click(function(){
     data_update();

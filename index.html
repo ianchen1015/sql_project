@@ -8,10 +8,23 @@
 
     <!-- ... css ... -->
     <link rel="stylesheet" href="css/w3.css">
-    <link  rel="stylesheet" href="css/picture.css">
-    <style>.error{color:red;}</style>
-    <style>.hide{display: none;}</style>
     <!-- ... <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> ... -->
+    <link  rel="stylesheet" href="css/picture.css">
+    <style>
+        .error{color:red;}
+        .hide{display: none;}
+        .navbar {
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .main {
+            padding: 8px;
+            margin-top: 30px;
+            height: 1500px; /* Used in this example to enable scrolling */
+        }
+    </style>
 
     <!-- ... jquery ... -->
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
@@ -30,50 +43,71 @@
 
 <script>var sql_data;</script>
 
-<div class="w3-top">
-<div class="w3-container">
-<div class="w3-content">
-    <p>
-        <div class="w3-panel w3-card w3-round w3-dark-grey ">
-            <button class="w3-bar-item w3-button" id="all_btn" onclick="get_data();sort_id(0);">All</button>
-            <button class="w3-bar-item w3-button" id="search_btn">Search</button>
-            <button class="w3-bar-item w3-button" onclick="modal_insert();modal_open();">Add+</button>
-        </div>
-    </p>
-    <p>
-        <div class="w3-panel w3-card w3-round w3-blue-grey ">
-            <div class="w3-dropdown-hover w3-blue-grey">
+<div class="navbar">
+    <div class="w3-dark-grey w3-content">
+        <button class="hide w3-bar-item w3-button" id="refresh_btn"">Refresh</button>
+        <button class="w3-bar-item w3-button" id="search_btn">Search</button>
+        <button class="w3-bar-item w3-button" id="sort_btn">Sort</button>
+        <button class="w3-bar-item w3-button" id="insert_btn">Insert</button>
+        <script>
+            $(document).ready(function() {
+                $("#refresh_btn").click(function(){
+                    get_data();
+                    sort_id(0);
+                    $("#refresh_btn").hide();
+                    $("#search_btn").show();
+                    $("#search_bar").fadeOut();
+                    $("#sort_bar").fadeOut();
+                    $("#option").val("")
+                });
+                $("#search_btn").click(function(){
+                    $("#search_btn").hide();
+                    $("#refresh_btn").show();
+                    $("#option").val("")
+                    $("html, body").animate({ scrollTop: 0 }, "fast");
+                    $("#search_bar").fadeIn();
+                });
+                $("#sort_btn").click(function(){
+                    $("html, body").animate({ scrollTop: 0 }, "fast");
+                    $("#sort_bar").slideToggle("fast");
+                });
+                $("#insert_btn").click(function(){
+                    modal_insert();
+                    modal_open();
+                });
+            });
+        </script>
+    </div>
+</div>
+
+<div class="main w3-content">
+    <div class="hide" id="sort_bar">
+        <div class="w3-panel w3-card w3-round w3-white">
+            <div class="w3-dropdown-hover w3-white">
                 <button class="w3-button">Time</button>
-                <div class="w3-dropdown-content w3-bar-block w3-blue-grey">
+                <div class="w3-dropdown-content w3-bar-block">
                     <button class="w3-bar-item w3-button" onclick="sort_id(0)">New</button>
                     <button class="w3-bar-item w3-button" onclick="sort_id(1)">Old</button>
                 </div>
             </div>
-            <div class="w3-dropdown-hover w3-blue-grey">
+            <div class="w3-dropdown-hover w3-white">
                 <button class="w3-button">Name</button>
-                <div class="w3-dropdown-content w3-bar-block w3-blue-grey">
+                <div class="w3-dropdown-content w3-bar-block">
                     <button class="w3-bar-item w3-button" onclick="sort_name(0)">A-Z</button>
                     <button class="w3-bar-item w3-button" onclick="sort_name(1)">Z-A</button>
                 </div>
             </div>
-            <div class="w3-dropdown-hover w3-blue-grey">
+            <div class="w3-dropdown-hover w3-white">
                 <button class="w3-button">Value</button>
-                <div class="w3-dropdown-content w3-bar-block w3-blue-grey">
+                <div class="w3-dropdown-content w3-bar-block">
                     <button class="w3-bar-item w3-button" onclick="sort_value(1)">Increase</button>
                     <button class="w3-bar-item w3-button" onclick="sort_value(0)">Decrease</button>
                 </div>
             </div>
         </div>
-    </p>
-</div>
-</div>
-</div>
-
-<div class="w3-container">
-
-    <div class="w3-content" style="margin-top: 126px; height: 1500px;">
-        <div class="hide" id="search_bar">
-        <div class="w3-panel w3-card w3-round w3-white" stlye="display:none!important">
+    </div>
+    <div class="hide" id="search_bar">
+        <div class="w3-panel w3-card w3-round w3-white">
             <p>
                 <select class="w3-select" id="option" name="option" align="center" valign="center">
                 <option value="" disabled selected>Choose your option</option>
@@ -91,9 +125,9 @@
                 </div>
             </p>
         </div>
-        </div>
-        <div id="show"></div>
     </div>
+    <div id="show"></div>
+</div>
 
     <!-- The form modal -->
     <div id="modal" class="w3-modal">
@@ -115,7 +149,7 @@
         </div>
     </div>
 
-</div>
+
 
     <script type="text/javascript" src="js/get_data.js"></script>
     <script type="text/javascript" src="js/main.js"></script>

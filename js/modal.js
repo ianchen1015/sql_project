@@ -423,17 +423,23 @@ function view_files(view_id){
                 '<div class="w3-container">';
                 for(var i = 0; i < other_names.length; i++){
                     //console.log(phpdata[i]);
+                    var path = 'http://people.cs.nctu.edu.tw/~yian1015/demo/data/'+ view_id +'/'+ other_names[i];
+                    //console.log("path: "+path);
                     output += 
-                    '<div class="w3-container w3-round">'+
-                        '<div class="desc w3-light-grey w3-round">'+ other_names[i] +'</div>'+
-                    '</div>';
+                    '<p><div class="w3-row w3-border w3-round">'+
+                        '<div class="w3-col s10 w3-container">'+
+                            '<p>'+other_names[i]+'</p>'+
+                        '</div>'+
+                        '<div class="w3-col s2">'+
+                            '<p><button class="w3-button w3-light-grey" onclick="Download('+"'"+ path +"'"+')">Download</button></p>'+
+                        '</div>'+
+                    '</div></p>';
                 }
                 output +=
                 '</div></p>'+
                 '</div>'+
                 '</div></p>';                
             }
-
 
             document.getElementById(view_id +"_view_files").innerHTML = output;
             $('.image').viewer();
@@ -446,6 +452,11 @@ function view_files(view_id){
         }
     })
 }
+
+function Download(url) {
+    //console.log("Download: "+url);
+    window.open(url); 
+};
 
 function del_confirm(index){
     var obj = sql_data[ index ];

@@ -9,8 +9,9 @@ $sql = "INSERT INTO test (name,value,text)
 VALUES ('$_name', '$_value', '$_text') ";
 if ($conn->query($sql) === TRUE) {
 	$last_id = mysqli_insert_id($conn);
-	echo "個數:" . count($_FILES["upfile"]["name"]) . "<BR>";
-	echo "New record created successfully. Last inserted ID is: " . $last_id;
+	//echo "個數:" . count($_FILES["upfile"]["name"]) . "<BR>";
+	echo "New record created successfully.";
+    //echo "Last inserted ID is: " . $last_id;
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }

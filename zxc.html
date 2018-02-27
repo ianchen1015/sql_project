@@ -25,21 +25,18 @@
 
 <BODY>
 
-    <embed src="data/255/1.mp3" width="200" height="43" autostart="true" loop="true"></embed>
+<form method="post" action="uploadImages.php" name ='photo' id='imageuploadform' enctype="multipart/form-data">
+        <input hidden="true" id="fileupload" type="file" name="image[]" multiple >
 
-<p><video width="400" controls>
-  <source src="data/255/1.mp3" type="video/mp4">
-  Your browser does not support HTML5 video.
-</video></p>
+        <div id ="divleft">
+            <button id="btnupload"></button>
 
-<audio controls>
-  <source src="data/255/1.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
-cc
-<audio src="song.mp3" controls="controls">
-Your browser does not support the audio element.
-</audio>
+        </div>    
+
+    </form>
+
+
+
 
 
 

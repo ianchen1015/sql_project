@@ -46,8 +46,9 @@ function modal_insert() {
             '<p><label>Text</label>'+
             '<textarea class="w3-input w3-border w3-round" id="text" name="text" type="text" style="resize:none"></textarea></p>'+
         
-            '<Input Type="File" Name="upfile[]" onchange="readURL(this)" targetID="preview_progressbarTW_img" multiple/ ><br>'+
-            '<div id="preview_progressbarTW_imgs"></div>'+
+            '<input Type="File" Name="upfile[]" onchange="readURL(this)" multiple/><br>'+
+
+            '<progress hidden id="progress_bar" value="0" max="1" stlye="width: 100%;"></progress>'+
         
             '<div align="right">'+
             '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="Submit"><p>'+
@@ -62,12 +63,25 @@ function modal_insert() {
             value: {required: true, number: true}
         },
         submitHandler:function(form){
-            modal.style.display = "none";  
+            $("#progress_bar").fadeIn();
             //disable the default form submission
             event.preventDefault();
             //grab all form data  
             var formData = new FormData($(form)[0]);
             $.ajax({
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    //Upload progress
+                    xhr.upload.addEventListener("progress", function(evt){
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            //Do something with upload progress
+                            console.log("progress: "+percentComplete);
+                            $("#progress_bar").val(percentComplete);
+                        }
+                    }, false);
+                    return xhr;
+                },
                 url: 'php/insert.php',
                 type: 'POST',
                 data: formData,
@@ -76,6 +90,7 @@ function modal_insert() {
                 contentType: false,
                 processData: false,
                 success: function(data) {
+                    modal.style.display = "none";
                     alert(data);
                     get_data();
                     sort_id(0);
@@ -95,7 +110,7 @@ function modal_edit(index) {
     document.getElementById("form_content").innerHTML = 
     '<div id="modal_content" class="w3-container">'+
         '<h2 id="form_header">Edit</h2>'+
-        '<form id="form">'+//edit form
+        '<p><form id="form">'+//edit form
 
             '<p><label>Name</label>'+
             '<input class="w3-input w3-border w3-round" id="name" name="name" type="text" value="'+ obj["name"] +'" autofocus></p>'+
@@ -107,21 +122,21 @@ function modal_edit(index) {
             '<textarea class="w3-input w3-border w3-round" id="text" name="text" type="text" value="'+ obj["text"] +'" style="resize:none"></textarea></p>'+
         
             '<div align="right">'+
-            '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="Submit"><p>'+
+            '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="Save"><p>'+
             '</div>'+
 
-        '</form>'+
+        '</form></p>'+
 
-        '<p><div class="w3-container w3-border w3-round w3-light-grey"><p>'+
-        '<form id="upload_img">'+//upload img
-        '<input class="hide w3-input w3-border w3-round" name="id" type="text" value="'+ edit_id +'" ></p>'+
-            '<Input id ="input_upload" Type="File" Name="upfile[]" onchange="readURL(this)" targetID="preview_progressbarTW_img" multiple/ ><br>'+
-                '<div id="preview_progressbarTW_imgs"></div>'+
+        '<p><div class="w3-container w3-border w3-round w3-light-grey">'+
+        '<p><form id="upload">'+
+            '<input class="hide w3-input w3-border w3-round" name="id" type="text" value="'+ edit_id +'" ></p>'+
+            '<Input id ="input_upload" Type="File" Name="upfile[]" onchange="readURL(this)" multiple/><br>'+
+            '<progress hidden id="progress_bar" value="0" max="1" stlye="width: 100%;"></progress>'+
             '<div align="right">'+
-                '<p><input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="upload"><p>'+
-                '</div>'+
-        '</form>'+
-        '</p></div></p>'+
+                '<input class="w3-btn w3-card w3-round w3-blue-grey" type="submit" value="upload">'+
+            '</div>'+
+        '</form></p>'+
+        '</div></p>'+
 
         '<div id="'+ edit_id +'_edit_images"></div>'+//show imgs
     '</div>';
@@ -138,15 +153,29 @@ function modal_edit(index) {
         }   
     });
 
-    $("#upload_img").validate({
+    $("#upload").validate({
         rules: {
         },
         submitHandler:function(form){
+            $("#progress_bar").fadeIn();
             //disable the default form submission
             event.preventDefault();
             //grab all form data  
             var formData = new FormData($(form)[0]);
             $.ajax({
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    //Upload progress
+                    xhr.upload.addEventListener("progress", function(evt){
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            //Do something with upload progress
+                            console.log("progress: "+percentComplete);
+                            $("#progress_bar").val(percentComplete);
+                        }
+                    }, false);
+                    return xhr;
+                },
                 url: 'php/upload_files.php',
                 type: 'POST',
                 data: formData,
@@ -155,15 +184,13 @@ function modal_edit(index) {
                 contentType: false,
                 processData: false,
                 success: function(data) {
-                    $( "#input_upload" ).load(window.location.href + " #input_upload" );
-                    $( "#preview_progressbarTW_imgs" ).load(window.location.href + " #preview_progressbarTW_imgs" );
                     //alert(data);
-                    edit_files(edit_id);
+                    modal_edit(index);
                     show_image(edit_id);
                 },
                 error: function(jqXHR) {
-                    alert("upload_img Error"+jqXHR.status);
-                    edit_files(edit_id);
+                    alert("upload Error"+jqXHR.status);
+                    modal_edit(index);
                     show_image(edit_id);
                 }
             });
@@ -181,22 +208,22 @@ function edit_files(edit_id) {
         },
         success: function(phpdata) {
             var output =
-            '<div class="images w3-container">';
+            '<div>';
             for(var i = 0; i < phpdata.length; i++){
                 //console.log(phpdata[i]);
                 var file_dir = "../data/"+ edit_id +"/"+ phpdata[i];
                 output += 
-                    '<div class="gallery w3-round">'+
-                        '<div align="right">'+
-                            '<span class="w3-button w3-round-xxlarge" onclick="del_file('+ "'" + file_dir + "'" +','+ edit_id + ','+"'"+ phpdata[i] +"'"+')">&times;</span>'+
+                    '<p><div class="w3-row w3-border w3-round">'+
+                        '<div class="w3-col s2">'+
+                            '<span align="left" class="w3-button w3-round-xxlarge" onclick="del_file('+ "'" + file_dir + "'" +','+ edit_id + ','+"'"+ phpdata[i] +"'"+')">&times;</span>'+
                         '</div>'+
-                        '<img class="w3-round" src="data/'+ edit_id +'/'+ phpdata[i] +'" width="400" height="300">'+
-                        '<div class="desc w3-light-grey w3-round">'+ phpdata[i] +'</div>'+
-                    '</div>';
+                        '<div class="w3-col s10">'+
+                            '<p>'+ phpdata[i] +'</p>'+
+                        '</div>'+
+                    '</div></p>';
             }
             output +=
-            '</div>'+
-            '</div></p>';
+            '</div>';
             document.getElementById(edit_id +"_edit_images").innerHTML = output;
             $('.image').viewer();
             $('.images').viewer();
@@ -222,7 +249,6 @@ function del_file (file_dir, edit_id, filename) {
             success: function(data) {
                 //alert(filename+data);
                 edit_files(edit_id);
-                show_image(edit_id);
             },
             error: function(jqXHR) {
                 alert("Error"+jqXHR.status);
@@ -300,7 +326,7 @@ function view_files(view_id){
             var video_names = [];
             var other_names = [];
             var image_extensions = ["jpg", "jpeg", "png", "gif"];
-            var audio_extensions = ["ogg"];
+            var audio_extensions = ["ogg", "mp3"];
             var video_extensions = ["mp4"];
 
             for(var i = 0; i < phpdata.length; i++){
